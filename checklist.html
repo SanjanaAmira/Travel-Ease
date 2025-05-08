@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="header-buttons">
+        <a href="{{ url_for('index') }}" class="home-btn">Home</a>
+        <a href="{{ url_for('dashboard') }}" class="profile-btn">Profile</a>
+    </div>
+
+    <h1 class="text-center mb-4">Your Packing Checklist</h1>
+    
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Trip Details</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Destination:</strong> {{ destination }}</p>
+                            <p><strong>Trip Type:</strong> {{ trip_type }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Duration:</strong> {{ duration }} days</p>
+                            <p><strong>Season:</strong> {{ season }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Packing List</h5>
+                    <form id="checklist-form" method="POST" action="{{ url_for('complete_checklist', checklist_id=checklist.id) if checklist.id else '#' }}">
+                        <div class="checklist-items">
+                            {% for item in checklist %}
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="item{{ loop.index }}" name="items[]" value="{{ item }}">
+                                <label class="form-check-label" for="item{{ loop.index }}">
+                                    {{ item }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button type="button" class="btn btn-outline-primary me-2" onclick="printCheckedItems()">
+                                <i class="fas fa-print"></i> Print Checked Items
+                            </button>
+                            {% if checklist.id %}
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check"></i> Mark as Completed
+                            </button>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="print-section" style="display: none;">
+    <div class="print-header">
+        <h2>Your Packing Checklist</h2>
+        <div class="trip-details">
+            <p><strong>Destination:</strong> {{ destination }}</p>
+            <p><strong>Trip Type:</strong> {{ trip_type }}</p>
+            <p><strong>Duration:</strong> {{ duration }} days</p>
+            <p><strong>Season:</strong> {{ season }}</p>
+        </div>
+        <h3>Checked Items:</h3>
+    </div>
+    <ul id="checked-items-list"></ul>
+</div>
+
+<style>
+    .header-buttons {
+        position: absolute;
+        left: 20px;
+        top: 20px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .home-btn, .profile-btn {
+        background-color: #5e47a1;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .home-btn:hover, .profile-btn:hover {
+        background-color: #432c75;
+    }
+
+    .card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-title {
+        color: #2f1d4e;
+        font-weight: 600;
+    }
+    
+    .form-check-input:checked {
+        background-color: #5e47a1;
+        border-color: #5e47a1;
+    }
+    
+    .form-check-label {
+        color: #333;
+        font-size: 1.1rem;
+    }
+    
+    .btn-outline-primary {
+        color: #5e47a1;
+        border-color: #5e47a1;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: #5e47a1;
+        border-color: #5e47a1;
+        color: white;
+    }
+    
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+    
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+    
+    @media print {
+        .header-buttons, .btn, .form-check-input, .card, .container {
+            display: none !important;
+        }
+        
+        #print-section {
+            display: block !important;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .print-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .print-header h2 {
+            font-size: 18pt;
+            margin-bottom: 15px;
+        }
+        
+        .print-header h3 {
+            font-size: 16pt;
+            margin: 15px 0;
+        }
+        
+        .trip-details {
+            text-align: left;
+            margin: 15px 0;
+        }
+        
+        .trip-details p {
+            margin: 5px 0;
+            font-size: 12pt;
+        }
+        
+        #checked-items-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        #checked-items-list li {
+            padding: 5px 0;
+            font-size: 14pt;
+            line-height: 1.5;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    }
+</style>
+
+<script>
+function printCheckedItems() {
+    
+    const checkedItems = [];
+    document.querySelectorAll('.form-check-input:checked').forEach(checkbox => {
+        checkedItems.push(checkbox.value);
+    });
+    
+   
+    const checkedItemsList = document.getElementById('checked-items-list');
+    checkedItemsList.innerHTML = '';
+    checkedItems.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        checkedItemsList.appendChild(li);
+    });
+    
+
+    window.print();
+}
+</script>
+{% endblock %}

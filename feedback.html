@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Ease - Feedback</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            margin-top: 80px;
+        }
+        
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .text-center {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #2f1d4e;
+            font-weight: bold;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #5e47a1;
+            outline: none;
+        }
+        
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+        }
+        
+        .star-rating input {
+            display: none;
+        }
+        
+        .star-rating label {
+            cursor: pointer;
+            font-size: 30px;
+            color: #ddd;
+            padding: 5px;
+        }
+        
+        .star-rating label:hover,
+        .star-rating label:hover ~ label,
+        .star-rating input:checked ~ label {
+            color: #ffb700;
+        }
+        
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .btn-submit {
+            background-color: #5e47a1;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-submit:hover {
+            background-color: #432c75;
+            transform: translateY(-3px);
+        }
+        
+        .header-buttons {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .home-btn, .profile-btn, .feedback-btn {
+            background-color: #5e47a1;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .home-btn:hover, .profile-btn:hover, .feedback-btn:hover {
+            background-color: #432c75;
+        }
+        
+        header {
+            background-color: #2f1d4e;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        header h1 {
+            font-size: 1.8rem;
+            color: #ffffff;
+            margin: 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+{% include 'base.html' %}
+<header>
+    <div class="header-buttons">
+        <a href="http://127.0.0.1:5000/" class="home-btn">Home</a>
+        <a href="http://127.0.0.1:5000/dashboard" class="profile-btn">Profile</a>
+        <a href="http://127.0.0.1:5000/feedbacks" class="feedback-btn">Feedback</a>
+    </div>
+    <h1>Travel Ease</h1>
+</header>
+<div class="container">
+    <div class="card">
+        <h2 class="text-center">Share Your Experience</h2>
+        <form action="/feedback" method="POST">
+            <div class="form-group">
+                <label for="room_type">Room Type</label>
+                {% if room_type %}
+                <input type="text" class="form-control" id="room_type" name="room_type" value="{{ room_type }}" readonly>
+                {% else %}
+                <select class="form-control" id="room_type" name="room_type" required>
+                    <option value="">Select Room Type</option>
+                    {% for room in room_types %}
+                    <option value="{{ room }}">{{ room }}</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label>Rating</label>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="rating" value="5" required />
+                    <label for="star5">★</label>
+                    <input type="radio" id="star4" name="rating" value="4" />
+                    <label for="star4">★</label>
+                    <input type="radio" id="star3" name="rating" value="3" />
+                    <label for="star3">★</label>
+                    <input type="radio" id="star2" name="rating" value="2" />
+                    <label for="star2">★</label>
+                    <input type="radio" id="star1" name="rating" value="1" />
+                    <label for="star1">★</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="comment">Comments (Optional)</label>
+                <textarea class="form-control" id="comment" name="comment" placeholder="Share your experience with this room..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="feedback_type">Type of Feedback</label>
+                <select class="form-control" id="feedback_type" name="feedback_type">
+                    <option value="">Select feedback type</option>
+                    <option value="suggestion">Suggestion for Improvement</option>
+                    <option value="concern">Concern or Issue</option>
+                    <option value="praise">Praise or Recognition</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="feedback_details">Details</label>
+                <textarea class="form-control" id="feedback_details" name="feedback_details" placeholder="Please provide more details about your feedback..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn-submit">Submit Feedback</button>
+        </form>
+    </div>
+</div>
+<footer>
+    <p>&copy; 2025 Travel Ease. All rights reserved.</p>
+</footer>
+</body>
+</html>

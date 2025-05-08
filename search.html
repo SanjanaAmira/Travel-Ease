@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 20px;
+        color: #333;
+        margin-top: 80px;
+    }
+
+    .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .header-container h1 {
+        font-family: 'Pacifico', cursive;
+        font-size: 2.5rem;
+        color: #2f1d4e;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-icon {
+        width: 60px;
+        height: auto;
+        animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .hero-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .city-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .city-buttons button {
+        padding: 12px 25px;
+        border: none;
+        background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .city-buttons button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .city-buttons button.active {
+        background: linear-gradient(45deg, #5e47a1, #7b68ee);
+        transform: scale(1.05);
+    }
+
+    .hotel-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        padding: 0 10px;
+    }
+
+    .hotel-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        position: relative;
+    }
+
+    .hotel-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .hotel-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .hotel-card-content {
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
+
+    .hotel-card h3 {
+        font-size: 1.6rem;
+        color: #2f1d4e;
+        margin-bottom: 10px;
+    }
+
+    .hotel-card p {
+        margin: 5px 0;
+        font-size: 1rem;
+        color: #555;
+    }
+
+    .hotel-card button {
+        width: 100%;
+        padding: 10px;
+        font-weight: 600;
+        margin-top: 10px;
+    }
+
+    .hotel-card button i {
+        margin-right: 8px;
+    }
+
+    .chatbot-btn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: linear-gradient(45deg, #ff69b4, #ff8e53);
+        border: none;
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s ease;
+    }
+
+    .chatbot-btn:hover {
+        transform: scale(1.1);
+    }
+
+    .chatbot-btn img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .header-buttons {
+        position: absolute;
+        left: 20px;
+        top: 15px;
+        display: flex;
+        gap: 10px;
+        padding: 5px;
+    }
+
+    .header-buttons a {
+        padding: 10px 20px;
+        background: linear-gradient(45deg, #5e47a1, #7b68ee);
+        color: white;
+        text-decoration: none;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+    }
+
+    .header-buttons a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .header-buttons a i {
+        margin-right: 8px;
+    }
+
+    @media (max-width: 768px) {
+        .header-container h1 {
+            font-size: 2rem;
+        }
+
+        .hero-image {
+            height: 200px;
+        }
+
+        .city-buttons button {
+            padding: 10px 15px;
+            font-size: 0.9rem;
+        }
+
+        .hotel-card {
+            width: 100%;
+        }
+
+        .header-buttons {
+            flex-wrap: wrap;
+            left: 10px;
+            top: 10px;
+        }
+
+        .header-buttons a {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<header style="display: flex; justify-content: center; align-items: center; background-color: #2f1d4e; padding: 15px;">
+    <div class="header-buttons" style="position: absolute; left: 20px;">
+        <a href="{{ url_for('index') }}" class="home-btn"><i class="fas fa-home"></i> Home</a>
+        <a href="{{ url_for('dashboard') }}" class="profile-btn"><i class="fas fa-user"></i> Profile</a>
+        <a href="{{ url_for('faq') }}" class="faq-btn"><i class="fas fa-question"></i> FAQ</a>
+        <a href="{{ url_for('compare_hotels') }}" class="compare-btn"><i class="fas fa-balance-scale"></i> Compare Hotels</a>
+    </div>
+    <h1 style="color: white; font-size: 1.8rem; font-weight: bold; margin: 0;">Travel Ease</h1>
+</header>
+
+<div class="container">
+    <div class="header-container">
+        <h1>Discover Your Perfect Stay</h1>
+        <img src="{{ url_for('static', filename='h.png') }}" alt="Hotel Icon" class="header-icon">
+    </div>
+
+    <img src="https://images.unsplash.com/photo-1542314831-8f7d16a4dbcc?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&ixid=MnwxfDB8MXxyYW5kb218MHx8aG90ZWx8fHx8fHwxNjgxOTM0Njk5&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1200" alt="Hotel Hero Image" class="hero-image">
+
+    <div class="city-buttons">
+        <button onclick="filterHotels('Barishal')">Barishal</button>
+        <button onclick="filterHotels('Chattagram')">Chattagram</button>
+        <button onclick="filterHotels('Dhaka')">Dhaka</button>
+        <button onclick="filterHotels('Khulna')">Khulna</button>
+        <button onclick="filterHotels('Gazipur')">Gazipur</button>
+        <button onclick="filterHotels('Jessore')">Jessore</button>
+        <button onclick="filterHotels('Savar')">Savar</button>
+        <button onclick="filterHotels('Sylhet')">Sylhet</button>
+    </div>
+
+    <div class="hotel-list" id="hotelList">
+        {% set city_order = ['Barishal', 'Chattagram', 'Dhaka', 'Khulna', 'Gazipur', 'Jessore', 'Savar', 'Sylhet'] %}
+        {% for city in city_order %}
+            {% for hotel in hotels if hotel.city == city %}
+                <div class="hotel-card" data-city="{{ hotel.city }}" data-price="{{ hotel.price_per_night }}">
+                    <img src="{{ url_for('static', filename='images/hotels/' ~ hotel.image_url) }}" alt="{{ hotel.name }}">
+                    <div class="hotel-card-content">
+                        <h3>{{ hotel.name }}</h3>
+                        <p><strong>City:</strong> {{ hotel.city }}</p>
+                        <p><strong>Address:</strong> {{ hotel.address }}</p>
+                        <form method="get" action="{{ url_for('rooms') }}">
+                            <input type="hidden" name="hotel_id" value="{{ hotel.id }}">
+                            <input type="hidden" name="checkin" value="{{ session.get('checkin') }}">
+                            <input type="hidden" name="checkout" value="{{ session.get('checkout') }}">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-hotel"></i> Book Now</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    <button class="chatbot-btn" onclick="openChatbot()">
+        <img src="{{ url_for('static', filename='chatbot.png') }}" alt="Chat">
+    </button>
+</div>
+
+<footer style="background-color: #0d1e2a; color: white; text-align: center; padding: 10px; margin-top: 30px;">
+    <p>© 2025 Travel Ease. All rights reserved.</p>
+</footer>
+
+<script>
+    let selectedCity = null;
+
+    function filterHotels(city) {
+        selectedCity = city;
+        document.querySelectorAll('.city-buttons button').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        filterDisplay();
+    }
+
+    function filterDisplay() {
+        const hotels = document.querySelectorAll('.hotel-card');
+        hotels.forEach(card => {
+            const cardCity = card.getAttribute('data-city');
+            if (selectedCity === null || cardCity === selectedCity) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    function openChatbot() {
+        window.open('/chatbot-ui', '_blank');
+    }
+
+    window.onload = () => {
+        filterDisplay();
+    };
+</script>
+{% endblock %}

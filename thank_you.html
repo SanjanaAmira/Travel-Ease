@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Ease - Thank You</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            margin-top: 60px;
+        }
+        
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            transition: transform 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .text-center {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: #2f1d4e;
+            font-weight: bold;
+        }
+        
+        .success-icon {
+            font-size: 5rem;
+            color: #4CAF50;
+            margin: 20px 0;
+        }
+        
+        .card p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin: 20px 0 30px;
+            color: #555;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary {
+            background-color: #5e47a1;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #432c75;
+            transform: translateY(-3px);
+        }
+        
+        .btn-secondary {
+            background-color: #eae3f9;
+            color: #2f1d4e;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #d5c9f2;
+            transform: translateY(-3px);
+        }
+
+        .btn-checklist {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        
+        .btn-checklist:hover {
+            background-color: #218838;
+            transform: translateY(-3px);
+        }
+        
+        header {
+            background-color: #2f1d4e;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        header h1 {
+            font-size: 1.8rem;
+            color: #ffffff;
+            margin: 0;
+            font-weight: bold;
+        }
+        
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .header-buttons {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .home-btn, .profile-btn, .feedback-btn {
+            background-color: #5e47a1;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .home-btn:hover, .profile-btn:hover, .feedback-btn:hover {
+            background-color: #432c75;
+        }
+
+        .checklist-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eae3f9;
+        }
+
+        .checklist-icon {
+            font-size: 2.5rem;
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+{% include 'base.html' %}
+<div class="confetti" id="confetti"></div>
+<header>
+    <div class="header-buttons">
+        <a href="{{ url_for('index') }}" class="home-btn">Home</a>
+        <a href="{{ url_for('dashboard') }}" class="profile-btn">Profile</a>
+        <a href="{{ url_for('feedbacks') }}" class="feedback-btn">Feedback</a>
+    </div>
+    <h1>Travel Ease</h1>
+</header>
+<div class="container">
+    <div class="card">
+        <div class="success-icon">✓</div>
+        <h2 class="text-center">Booking Confirmed!</h2>
+        <p>Your payment was successful and your booking has been confirmed.</p>
+        <p>Thank you for choosing Travel Ease for your stay. We look forward to hosting you!</p>
+        
+        <div class="btn-group">
+            <a href="/rooms" class="btn-primary">Explore More Rooms</a>
+            {% if room_type %}
+            <a href="{{ url_for('feedback', room_type=room_type) }}" class="btn-secondary">Share Your Experience</a>
+            {% endif %}
+        </div>
+
+        <div class="checklist-section">
+            <div class="checklist-icon">🎒</div>
+            <h3>Prepare for Your Trip</h3>
+            <p>Get a personalized packing checklist based on your destination and travel details.</p>
+            <a href="{{ url_for('packing_checklist') }}" class="btn-checklist">
+                <i class="fas fa-suitcase"></i> Generate Packing Checklist
+            </a>
+        </div>
+    </div>
+</div>
+<footer style="background-color: #0d1e2a; color: white; text-align: center; padding: 10px;">
+    <p>&copy; 2025 Travel Ease. All rights reserved.</p>
+</footer>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const confettiContainer = document.getElementById('confetti');
+        
+        function createConfetti() {
+            const colors = ['#5e47a1', '#eae3f9', '#ff9800', '#4CAF50', '#2196F3'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'absolute';
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = -20 + 'px';
+                confetti.style.opacity = Math.random() + 0.5;
+                confetti.style.borderRadius = '50%';
+                
+                confettiContainer.appendChild(confetti);
+                
+                // Animate falling
+                const duration = Math.random() * 3 + 2;
+                const rotation = Math.random() * 360;
+                
+                confetti.animate([
+                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                    { transform: `translateY(100vh) rotate(${rotation}deg)`, opacity: 0 }
+                ], {
+                    duration: duration * 1000,
+                    easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)',
+                    fill: 'forwards'
+                });
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, duration * 1000);
+            }
+        }
+        
+        createConfetti();
+    });
+</script>
+</body>
+</html>

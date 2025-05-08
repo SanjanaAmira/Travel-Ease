@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Ease - Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            margin-top: 60px;
+        }
+        
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .text-center {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #2f1d4e;
+            font-weight: bold;
+        }
+        
+        .form-input {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 2px solid #5e47a1;
+            border-radius: 10px;
+            font-size: 1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: #432c75;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(94, 71, 161, 0.3);
+        }
+        
+        .btn-primary {
+            background-color: #5e47a1;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #432c75;
+        }
+        
+        header {
+            background-color: #2f1d4e;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            font-size: 1.8rem;
+            color: #ffffff;
+            margin: 0;
+            font-weight: bold;
+        }
+        
+        footer {
+            background-color: rgba(47, 29, 78, 0.9);
+            padding: 20px;
+            text-align: center;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+{% include 'base.html' %}
+<header>
+    <h1>Travel Ease</h1>
+</header>
+<div class="container">
+    <div class="card">
+        <h2 class="text-center">Create Account</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        <form action="/register" method="POST" class="form">
+            <input type="text" name="name" class="form-input" placeholder="Full Name" required>
+            <input type="email" name="email" class="form-input" placeholder="Email Address" required>
+            <input type="password" name="password" class="form-input" placeholder="Create Password" required>
+            <input type="text" name="phone" class="form-input" placeholder="Phone Number" required>
+            <button type="submit" class="btn btn-primary">Join Travel Ease</button>
+        </form>
+    </div>
+</div>
+<footer style="background-color: #0d1e2a; color: white; text-align: center; padding: 10px;">
+    <p>&copy; 2025 Travel Ease. All rights reserved.</p>
+</footer>
+</body>
+</html>

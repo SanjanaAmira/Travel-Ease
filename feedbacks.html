@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Ease - Feedbacks</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .container {
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            margin-top: 80px;
+            min-height: calc(100vh - 200px);
+        }
+        
+        .page-title {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2f1d4e;
+            font-weight: bold;
+        }
+        
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background-color: #eae3f9;
+            color: #2f1d4e;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background-color: #5e47a1;
+            color: white;
+        }
+        
+        .feedback-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feedback-card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feedback-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .room-type {
+            font-size: 1.3rem;
+            color: #2f1d4e;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .rating {
+            color: #ffb700;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .comment {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .date {
+            color: #888;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #777;
+        }
+        
+        header {
+            background-color: #2f1d4e;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        header h1 {
+            font-size: 1.8rem;
+            color: #ffffff;
+            margin: 0;
+            font-weight: bold;
+        }
+        
+        .header-buttons {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .home-btn, .profile-btn {
+            background-color: #5e47a1;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .home-btn:hover, .profile-btn:hover {
+            background-color: #432c75;
+        }
+    </style>
+</head>
+<body>
+{% include 'base.html' %}
+<header>
+    <div class="header-buttons">
+        <a href="http://127.0.0.1:5000/" class="home-btn">Home</a>
+        <a href="http://127.0.0.1:5000/dashboard" class="profile-btn">Profile</a>
+    </div>
+    <h1>Travel Ease</h1>
+</header>
+<div class="container">
+    <h1 class="page-title">Guest Feedbacks</h1>
+    
+    <div class="filters">
+        <button class="filter-btn active" data-filter="all">All Rooms</button>
+        {% for room_type in room_types %}
+        <button class="filter-btn" data-filter="{{ room_type }}">{{ room_type }}</button>
+        {% endfor %}
+    </div>
+    
+    <div class="feedback-grid">
+        {% if feedbacks %}
+            {% for feedback in feedbacks %}
+            <div class="feedback-card" data-room="{{ feedback.room_type }}">
+                <div class="room-type">{{ feedback.room_type }}</div>
+                <div class="rating">
+                    {% for i in range(feedback.rating) %}★{% endfor %}
+                    {% for i in range(5 - feedback.rating) %}☆{% endfor %}
+                </div>
+                <div class="comment">{{ feedback.comment or "No additional comments." }}</div>
+                <div class="date">{{ feedback.created_at.strftime('%B %d, %Y') }}</div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <h3>No feedbacks yet!</h3>
+                <p>Be the first to share your experience with our rooms.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+<footer>
+    <p>&copy; 2025 Travel Ease. All rights reserved.</p>
+</footer>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const feedbackCards = document.querySelectorAll('.feedback-card');
+        
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                
+                feedbackCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-room') === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93a672c1697053f7',t:'MTc0NjM0NTQ1Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>

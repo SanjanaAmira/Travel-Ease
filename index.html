@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Promo Code</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #faf9ff;
+      color: #1e1e2f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+      flex-direction: column;
+      margin-top: 60px;
+    }
+
+    header {
+      background-color: #2f1d4e;
+      padding: 16px 32px;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+    }
+
+    .nav-btns button {
+      margin-left: 12px;
+      padding: 8px 16px;
+      background-color: #5e47a1;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .nav-btns button:hover {
+      background-color: #432c75;
+    }
+
+    .search-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 80px;
+    }
+
+    .search-container input {
+      width: 250px;
+      padding: 8px 16px;
+      border: 2px solid #5e47a1;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .search-container button {
+      background-color: #5e47a1;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .search-container button:hover {
+      background-color: #432c75;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      width: 100%;
+      max-width: 800px;
+      margin-top: 40px;
+    }
+
+    .promo-card {
+      background-color: #eae3f9;
+      padding: 40px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .promo-card:hover {
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .promo-card h2 {
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .promo-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      font-size: 18px;
+    }
+
+    .promo-item input {
+      accent-color: #5f3dc4;
+    }
+
+    .promo-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .promo-actions button {
+      border: none;
+      background-color: transparent;
+      color: #5e47a1;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      font-size: 16px;
+    }
+
+    .promo-actions button:hover {
+      color: #432c75;
+    }
+
+    .final-payment {
+      background-color: #1e1e1e;
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 400px;
+      margin-top: 40px;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .summary-item:last-child {
+      font-weight: bold;
+    }
+
+    .discount-box {
+      margin-bottom: 20px;
+      background-color: #eae3f9;
+      padding: 10px;
+      border-radius: 8px;
+      color: #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: transform 0.3s ease;
+    }
+
+    .discount-box button {
+      background: transparent;
+      border: none;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      color: #a33;
+    }
+
+    .promo-item label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .progress-container {
+      margin-top: 20px;
+      height: 8px;
+      width: 100%;
+      background-color: #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: #5e47a1;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .manual-code-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .manual-code-container input {
+      width: 75%;
+      padding: 8px 16px;
+      border: 2px solid #5e47a1;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .manual-code-container button {
+      background-color: #5e47a1;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .manual-code-container button:hover {
+      background-color: #432c75;
+    }
+
+    .payment-btn {
+      background-color: #5e47a1;
+      color: white;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: none;
+      width: 100%;
+      margin-top: 20px;
+      cursor: pointer;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .payment-btn:hover {
+      background-color: #432c75;
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>TravelEase</h1>
+    <div class="nav-btns">
+      <button>Bookings</button>
+      <button>Promo Codes</button>
+      <button>Home</button>
+    </div>
+  </header>
+
+  <!-- Search bar below the header -->
+  <div class="search-container">
+    <input type="text" id="searchPromo" placeholder="Search for promo codes...">
+    <button onclick="searchPromoCode()">Search</button>
+  </div>
+
+  <div class="container">
+    <div class="promo-card">
+      <h2>Promo Code</h2>
+      <p style="margin-bottom: 16px;">Apply Promo Code for Best Discounts</p>
+      <div class="promo-item">
+        <label><input type="checkbox" id="samin10" /> Samin10</label>
+        <span>10%</span>
+      </div>
+      <div class="promo-item">
+        <label><input type="checkbox" id="yeasir20" /> Yeasir20</label>
+        <span>20%</span>
+      </div>
+      <div class="promo-item">
+        <label><input type="checkbox" id="salim30" /> Salim30</label>
+        <span>30%</span>
+      </div>
+
+      <!-- Manual Promo Code Input -->
+      <div class="manual-code-container">
+        <input type="text" id="manualCode" placeholder="Enter promo code">
+        <button onclick="applyManualCode()">Apply Code</button>
+      </div>
+
+      <div class="progress-container">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+      <div class="promo-actions">
+        <button onclick="applyCoupon()">Apply</button>
+        <button onclick="removeCoupon()">Remove</button>
+      </div>
+    </div>
+
+    <div id="discount-section" style="display: none;">
+      <div class="discount-box">
+        <span id="discount-message">606 tk discount applied</span>
+        <button onclick="removeCoupon()">✖</button>
+      </div>
+
+      <div class="final-payment">
+        <div class="summary-item">
+          <span>Total Amount:</span>
+          <span id="total-amount">1060 Taka</span>
+        </div>
+        <div class="summary-item">
+          <span>Discount:</span>
+          <span id="discount">606 Taka</span>
+        </div>
+        <div class="summary-item">
+          <span>Pay:</span>
+          <span id="amount-to-pay">454 Taka</span>
+        </div>
+      </div>
+
+      <!-- Proceed to Payment Button -->
+      <form action="/payment" method="GET">
+        <input type="hidden" name="discount" id="payment-discount">
+        <input type="hidden" name="final_amount" id="payment-final-amount">
+        <button type="submit" class="payment-btn">Proceed to Payment</button>
+    </form>
+    </div>
+  </div>
+
+  <script>
+    function applyCoupon() {
+      const totalAmount = 1060;
+      let discount = 0;
+
+      if (document.getElementById('samin10').checked) discount += 106;
+      if (document.getElementById('yeasir20').checked) discount += 212;
+      if (document.getElementById('salim30').checked) discount += 288;
+
+      const finalAmount = totalAmount - discount;
+
+      document.getElementById("discount").textContent = discount + " Taka";
+      document.getElementById("amount-to-pay").textContent = finalAmount + " Taka";
+      document.getElementById("discount-message").textContent = discount + " tk discount applied";
+      document.getElementById("total-amount").textContent = totalAmount + " Taka";
+      document.getElementById("discount-section").style.display = "block";
+
+      // Update hidden inputs to pass to payment page
+      document.getElementById("payment-discount").value = discount;
+      document.getElementById("payment-final-amount").value = finalAmount;
+
+      // Update progress bar
+      const progressPercentage = (discount / totalAmount) * 100;
+      document.getElementById("progress-bar").style.width = progressPercentage + "%";
+    }
+
+    function removeCoupon() {
+      document.getElementById("discount-section").style.display = "none";
+      document.getElementById('samin10').checked = false;
+      document.getElementById('yeasir20').checked = false;
+      document.getElementById('salim30').checked = false;
+      document.getElementById("progress-bar").style.width = "0%";
+    }
+
+    function searchPromoCode() {
+      const searchTerm = document.getElementById("searchPromo").value.toLowerCase();
+      const promoItems = document.querySelectorAll(".promo-item");
+
+      promoItems.forEach(item => {
+        const promoCode = item.querySelector("label").textContent.toLowerCase();
+        if (promoCode.includes(searchTerm)) {
+          item.style.display = "flex";
+        } else {
+          item.style.display = "none";
+        }
+      });
+    }
+
+    function applyManualCode() {
+      const manualCode = document.getElementById("manualCode").value.trim().toLowerCase();
+      const validCodes = ["samin10", "yeasir20", "salim30"];
+
+      if (validCodes.includes(manualCode)) {
+        alert("Promo code applied successfully: " + manualCode);
+      } else {
+        alert("Invalid promo code");
+      }
+    }
+  </script>
+
+</body>
+</html>

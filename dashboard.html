@@ -1,0 +1,370 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Travel Ease{% endblock %}
+
+{% block head %}
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-image: url("{{ url_for('static', filename='images/background.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-color: #f5f7fa;
+    }
+
+    
+    .notification-banner {
+        background: linear-gradient(90deg, #5e47a1, #7e67c1);
+        color: white;
+        padding: 12px 20px;
+        text-align: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1050;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50px;
+    }
+
+    .notification-content {
+        font-size: 1rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .notification-icon {
+        font-size: 1.25rem;
+    }
+
+    .notification-close {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 5px;
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
+    }
+
+    .notification-close:hover {
+        opacity: 1;
+    }
+
+    
+    .site-header {
+        background-color: #2f1d4e;
+        color: white;
+        text-align: center;
+        padding: 15px 0;
+        width: 100%;
+        position: fixed;
+        top: 50px;
+        left: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .site-header h1 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 600;
+    }
+
+    
+    .header-nav {
+        display: flex;
+        gap: 10px;
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .header-nav a {
+        padding: 8px 15px;
+        background-color: #5e47a1;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .header-nav a:hover {
+        background-color: #432c75;
+    }
+
+    
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px;
+        padding-top: 120px;
+    }
+
+    .card {
+        background-color: #fff;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+    }
+
+    .text-center {
+        text-align: center;
+        font-size: 28px;
+        color: #2f1d4e;
+        margin: 0 0 30px 0;
+        font-weight: 600;
+    }
+
+    .user-info {
+        background-color: #f8f5ff;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+    }
+
+    .user-info p {
+        margin: 10px 0;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .points-display {
+        text-align: center;
+        margin: 30px 0;
+    }
+
+    .points-display span {
+        display: inline-block;
+        background-color: #eae3f9;
+        color: #5e47a1;
+        font-size: 20px;
+        font-weight: 600;
+        padding: 12px 30px;
+        border-radius: 8px;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .btn-primary {
+        background-color: #5e47a1;
+        border-color: #5e47a1;
+    }
+
+    .btn-primary:hover {
+        background-color: #432c75;
+        border-color: #432c75;
+    }
+
+    .btn-feedback {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-feedback:hover {
+        background-color: #218838;
+        border-color: #218838;
+    }
+
+    .btn i {
+        margin-right: 8px;
+    }
+
+    
+    .delete-btn-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+    }
+    
+    footer {
+        text-align: center;
+        padding: 20px;
+        color: white;
+        margin-top: 30px;
+        background-color: #0d1e2a;
+    }
+    
+    
+    @media (max-width: 768px) {
+        .header-nav {
+            position: static;
+            transform: none;
+            justify-content: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .site-header {
+            flex-direction: column;
+            height: auto;
+            padding: 10px 0;
+        }
+        
+        .container {
+            padding-top: 160px;
+        }
+        
+        .button-group {
+            flex-direction: column;
+        }
+        
+        .button-group a {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="notification-banner" id="notification-banner">
+    <div class="notification-content">
+        <span class="notification-icon">🎁</span>
+        <span id="notification-message">Loading rewards information...</span>
+    </div>
+    <button class="notification-close" id="notification-close">&times;</button>
+</div>
+
+
+<div class="site-header">
+    <div class="header-nav">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('dashboard') }}">Profile</a>
+        <a href="{{ url_for('faq') }}">FAQ</a>
+        <a href="{{ url_for('compare_hotels') }}">Compare Hotels</a>
+    </div>
+    <h1>Travel Ease</h1>
+</div>
+
+<div class="container">
+    <div class="card">
+        <h2 class="text-center">Welcome, {{ user.name }}</h2>
+
+        <div class="user-info">
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Phone:</strong> {{ user.phone }}</p>
+        </div>
+
+        <div class="points-display">
+            <span>Reward Points: {{ user.points }}</span>
+        </div>
+
+        <div class="button-group">
+            {% if 'user_id' in session %}
+            <a href="{{ url_for('search_hotels') }}" class="btn btn-primary"><i class="fas fa-hotel"></i> Book Now</a>
+            {% endif %}
+            <a href="/update" class="btn btn-warning"><i class="fas fa-user-edit"></i> Update Profile</a>
+            <a href="http://127.0.0.1:5000/feedbacks" class="btn btn-feedback"><i class="fas fa-comment"></i> Feedback</a>
+            <a href="/logout" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i ="/logout" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+        </div>
+
+        <div class="delete-btn-container">
+            <a href="/delete" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete Account</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 Travel Ease. All rights reserved.</p>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const banner = document.getElementById('notification-banner');
+        const message = document.getElementById('notification-message');
+        const closeBtn = document.getElementById('notification-close');
+        const userPoints = {{ user.points | tojson | safe }};
+
+        const notifications = [
+            {
+                text: "Earn 5% discount on room bookings when you reach 100 reward points!",
+                icon: "🎁",
+                threshold: 0
+            },
+            {
+                text: "Earn 10% discount on room bookings when you reach 250 reward points!",
+                icon: "🌟",
+                threshold: 0
+            },
+            {
+                text: "Earn 20% discount on room bookings when you reach 500 reward points!",
+                icon: "💎",
+                threshold: 0
+            }
+        ];
+
+        if (userPoints >= 100) {
+            notifications.push({
+                text: "Congratulations! You've unlocked 5% discount on all room bookings!",
+                icon: "🎉",
+                threshold: 100
+            });
+        }
+
+        if (userPoints >= 250) {
+            notifications.push({
+                text: "Amazing! You've unlocked 10% discount on all room bookings!",
+                icon: "🔥",
+                threshold: 250
+            });
+        }
+
+        if (userPoints >= 500) {
+            notifications.push({
+                text: "Incredible! You've unlocked 20% discount on all room bookings!",
+                icon: "⭐",
+                threshold: 500
+            });
+        }
+
+        let currentIndex = 0;
+
+        function showNotification() {
+            if (notifications.length === 0) return;
+
+            const current = notifications[currentIndex];
+            message.innerHTML = `<span class="notification-icon">${current.icon}</span> ${current.text}`;
+
+            setTimeout(() => {
+                currentIndex = (currentIndex + 1) % notifications.length;
+                showNotification();
+            }, 5000);
+        }
+
+        closeBtn.addEventListener('click', function() {
+            
+            currentIndex = (currentIndex + 1) % notifications.length;
+            showNotification();
+        });
+
+        
+        showNotification();
+    });
+</script>
+{% endblock %}

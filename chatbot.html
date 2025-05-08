@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Make Your Trip Easier!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffd5fe;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #f1037a;
+        }
+
+        #chatbox {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #fff6fd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .msg {
+            margin: 5px 0;
+        }
+
+        .user {
+            text-align: right;
+            color: rgb(0, 81, 255);
+        }
+
+        .bot {
+            text-align: left;
+            color: rgb(92, 0, 128);
+        }
+
+        #user_input {
+            width: 70%;
+            padding: 10px;
+            border-radius: 25px;
+            border: 2px solid #ff69b4;
+            outline: none;
+            font-size: 16px;
+            transition: 0.3s;
+            background-color: #fff8fd;
+            color: #f9a8d1;
+        }
+
+        #user_input:focus {
+            border-color: #f79ddc;
+            box-shadow: 0 0 5px #ff69b4;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background-color: #ff69b4;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #f79ddc;
+        }
+
+        .chat-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .chat-container img {
+            width: 60px;
+            height: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <img src="{{ url_for('static', filename='n.png') }}" alt="Travel Assistant Icon">
+        <h2>Travel Assistant</h2>
+    </div>
+
+    <div id="chatbox"></div>
+    
+    <div class="chat-container">
+        <input type="text" id="user_input" placeholder="Ask me anything!" onkeydown="checkEnter(event)" />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        const chatbox = document.getElementById('chatbox');
+
+        // Function to send message to Flask API
+        function sendMessage() {
+            const user_input = document.getElementById('user_input').value.trim(); // Trim any extra spaces
+            if (!user_input) return; // Prevent sending empty messages
+
+            // Display the user's message in the chatbox
+            chatbox.innerHTML += `<div class="msg user">${user_input}</div>`;
+            document.getElementById('user_input').value = ''; // Clear input field
+
+            // Send user message to Flask API
+            fetch('/chatbot-api', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: user_input })
+            })
+            .then(res => res.json())
+            .then(data => {
+                // Display the bot's response in the chatbox
+                chatbox.innerHTML += `<div class="msg bot">${data.reply}</div>`;
+                chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the latest message
+            })
+            .catch(error => {
+                // Handle errors gracefully
+                chatbox.innerHTML += `<div class="msg bot">Sorry, there was an error processing your request.</div>`;
+                console.error('Error:', error);
+            });
+        }
+
+        // Allow user to press 'Enter' to send a message
+        function checkEnter(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+    </script>
+</body>
+</html>

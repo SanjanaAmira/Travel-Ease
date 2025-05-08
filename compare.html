@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Compare Hotels</h1>
+
+    
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Hotel Name</th>
+                            <th>Location</th>
+                            <th>Price/Night</th>
+                            <th>Rating</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for hotel in hotels %}
+                        <tr>
+                            <td>{{ hotel.name }}</td>
+                            <td>{{ hotel.location }}</td>
+                            <td>৳{{ hotel.price_per_night }}</td>
+                            <td>⭐ {{ hotel.rating }}</td>
+                            <td>
+                                {% if hotel.is_available %}
+                                <a href="{{ url_for('add_to_compare', hotel_id=hotel.id) }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-plus"></i> Add to Compare
+                                </a>
+                                {% else %}
+                                <span class="text-danger">Not Available</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {% if session.get('compare_list') %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <h2 class="text-center mb-4">Selected Hotels for Comparison</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            {% for hotel_id in session.get('compare_list') %}
+                            {% set hotel = hotels|selectattr('id', 'eq', hotel_id)|first %}
+                            <th>{{ hotel.name }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Location</td>
+                            {% for hotel_id in session.get('compare_list') %}
+                            {% set hotel = hotels|selectattr('id', 'eq', hotel_id)|first %}
+                            <td>{{ hotel.location }}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>Rating</td>
+                            {% for hotel_id in session.get('compare_list') %}
+                            {% set hotel = hotels|selectattr('id', 'eq', hotel_id)|first %}
+                            <td>⭐ {{ hotel.rating }}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>Price/Night</td>
+                            {% for hotel_id in session.get('compare_list') %}
+                            {% set hotel = hotels|selectattr('id', 'eq', hotel_id)|first %}
+                            <td>৳{{ hotel.price_per_night }}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>Room Types</td>
+                            {% for hotel_id in session.get('compare_list') %}
+                            {% set hotel = hotels|selectattr('id', 'eq', hotel_id)|first %}
+                            <td>{{ hotel.room_types }}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>Amenities</td>
+                            {% for hotel_id in session.get('compare_list') %}
+                            {% set hotel = hotels|selectattr('id', 'eq', hotel_id)|first %}
+                            <td>{{ hotel.amenities }}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>Availability</td>
+                            {% for hotel_id in session.get('compare_list') %}
+                            {% set hotel = hotels|selectattr('id', 'eq', hotel_id)|first %}
+                            <td>{% if hotel.is_available %}✅ Available{% else %}❌ Not Available{% endif %}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>Actions</td>
+                            {% for hotel_id in session.get('compare_list') %}
+                            {% set hotel = hotels|selectattr('id', 'eq', hotel_id)|first %}
+                            <td>
+                                <a href="{{ url_for('remove_from_compare', hotel_id=hotel.id) }}" class="btn btn-danger btn-sm">Remove</a>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center mt-4">
+                <a href="{{ url_for('clear_compare') }}" class="btn btn-secondary">Clear Comparison</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+            <div class="alert alert-info">
+                <h4>Add hotels to compare</h4>
+                <p>Select up to 3 hotels to compare their features side by side for better understanding.</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="text-center mt-4">
+        <p class="text-muted">Still unsure? Try searching more hotels!</p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Go Back to Listings</a>
+    </div>
+</div>
+
+<style>
+    .table th {
+        background-color: #f8f9fa;
+    }
+
+    .btn-primary {
+        background-color: #5e47a1;
+        border-color: #5e47a1;
+    }
+
+    .btn-primary:hover {
+        background-color: #432c75;
+        border-color: #432c75;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f8f5ff;
+    }
+
+    .btn-outline-primary {
+        color: #5e47a1;
+        border-color: #5e47a1;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #5e47a1;
+        border-color: #5e47a1;
+        color: white;
+    }
+
+    .alert-info {
+        background-color: #f8f5ff;
+        border-color: #5e47a1;
+        color: #2f1d4e;
+    }
+</style>
+{% endblock %}

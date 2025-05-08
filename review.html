@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TravelEase - Review Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f5f5fa;
+            margin: 0;
+            padding: 0;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .header {
+            background-color: #5e3d94;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 17px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            width: 60%;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            animation: slideUp 0.8s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        h2, h3 {
+            color: #5e3d94;
+            text-align: center;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            background-color: #fcfaff;
+            margin-bottom: 16px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #9b6df3;
+            box-shadow: 0 0 5px rgba(155, 109, 243, 0.4);
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #6b46c1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #5531a5;
+        }
+
+        .review-list, .user-reviews {
+            background: #f9f8ff;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .review-item {
+            background: #fff;
+            border-left: 4px solid #6b46c1;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: #6b46c1;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">📋 Review - ShareYourExperience</div>
+
+    <div class="container">
+        <h2>Write a Review</h2>
+
+        <form method="POST">
+            <input type="text" name="username" placeholder="Your name" required>
+            <textarea name="review_text" placeholder="Write your thoughts about the package..." required></textarea>
+            <button type="submit">Submit Review</button>
+        </form>
+
+        {% if user_reviews %}
+        <div class="user-reviews">
+            <h3>Your Past Reviews</h3>
+            {% for r in user_reviews %}
+                <div class="review-item">{{ r.review_text }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if all_reviews %}
+        <div class="review-list">
+            <h3>All Reviews for this Package</h3>
+            {% for r in all_reviews %}
+                <div class="review-item">{{ r.review_text }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <a class="back-link" href="/">← Back to Transaction History</a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotels in {{ city }}</title>
+    <style>
+       
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #333;
+            text-align: center;
+            margin-top: 20px;
+            text-transform: uppercase;
+        }
+
+        
+        .filter-form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin: 0 auto 40px;
+            width: 70%;
+            text-align: center;
+        }
+
+        .slider-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slider-container input[type="range"] {
+            width: 150px;
+        }
+
+        
+        .hotel-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin: 0 20px;
+        }
+
+        
+        .hotel-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 300px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hotel-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .hotel-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .hotel-card img:hover {
+            transform: scale(1.1);
+        }
+
+        .hotel-card h2 {
+            font-size: 1.5em;
+            color: #28a745;
+            margin: 15px;
+        }
+
+        .hotel-card p {
+            margin: 10px 15px;
+            color: #666;
+            font-size: 1em;
+        }
+
+        .book-btn {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 15px 15px 25px;
+            transition: background-color 0.3s;
+        }
+
+        .book-btn:hover {
+            background-color: #218838;
+        }
+
+        
+        #priceValue {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Hotels in {{ city }}</h1>
+
+   
+    <form method="get" class="filter-form" action="/search_results">
+        <input type="hidden" name="city" value="{{ city }}">
+
+        <div class="slider-container">
+            <label for="priceRange">Price range: </label>
+            <span id="priceValue">{{ min_price }} - {{ max_price }}</span><br>
+            <input type="range" id="minPrice" name="min_price" min="0" max="10000" value="{{ min_price }}" oninput="updatePriceValue()">
+            <input type="range" id="maxPrice" name="max_price" min="0" max="10000" value="{{ max_price }}" oninput="updatePriceValue()">
+        </div>
+
+        <button type="submit" style="background-color: #007bff; color: white; padding: 10px 20px; border-radius: 5px; border: none; font-size: 16px;">Search</button>
+    </form>
+
+    
+    <div class="hotel-list">
+        {% for hotel in hotels %}
+            <div class="hotel-card">
+                <img src="{{ url_for('static', filename='images/hotels/' + hotel.image_url) }}" alt="{{ hotel.name }}">
+                <h2>{{ hotel.name }}</h2>
+                <p><strong>Address:</strong> {{ hotel.address }}</p>
+                <p><strong>Price:</strong> ${{ hotel.price }}</p>
+                <a class="book-btn" href="{{ url_for('book', hotel_id=hotel.id) }}">Book Now</a>
+            </div>
+        {% else %}
+            <p>No hotels found for this city and price range.</p>
+        {% endfor %}
+    </div>
+
+    <script>
+        function updatePriceValue() {
+            var min = document.getElementById('minPrice').value;
+            var max = document.getElementById('maxPrice').value;
+            document.getElementById('priceValue').textContent = min + ' - ' + max;
+        }
+    </script>
+
+</body>
+</html>

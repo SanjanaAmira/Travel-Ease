@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="header-buttons">
+        <a href="{{ url_for('index') }}" class="home-btn">Home</a>
+        <a href="{{ url_for('dashboard') }}" class="profile-btn">Profile</a>
+    </div>
+
+    <h1 class="text-center mb-4">Travel Preparation Assistant</h1>
+    <p class="text-center text-muted mb-4">Generate a personalized packing checklist for your trip</p>
+    
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ url_for('packing_checklist') }}" method="POST">
+                        <div class="mb-3">
+                            <label for="destination" class="form-label">Destination</label>
+                            <select class="form-select" id="destination" name="destination" required>
+                                <option value="">Select Destination</option>
+                                <option value="Cox's Bazar">Cox's Bazar</option>
+                                <option value="Sreemangal">Sreemangal</option>
+                                <option value="Sylhet">Sylhet</option>
+                                <option value="Dhaka">Dhaka</option>
+                                <option value="Chittagong">Chittagong</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="trip_type" class="form-label">Trip Type</label>
+                            <select class="form-select" id="trip_type" name="trip_type" required>
+                                <option value="">Select Trip Type</option>
+                                <option value="Business">Business</option>
+                                <option value="Beach">Beach</option>
+                                <option value="Mountain">Mountain</option>
+                                <option value="City">City Tour</option>
+                                <option value="Nature">Nature</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="duration" class="form-label">Duration (days)</label>
+                            <input type="number" class="form-control" id="duration" name="duration" min="1" max="30" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="season" class="form-label">Season</label>
+                            <select class="form-select" id="season" name="season" required>
+                                <option value="">Select Season</option>
+                                <option value="Summer">Summer</option>
+                                <option value="Winter">Winter</option>
+                                <option value="Monsoon">Monsoon</option>
+                                <option value="Spring">Spring</option>
+                                <option value="Autumn">Autumn</option>
+                            </select>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Generate Checklist</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .header-buttons {
+        position: absolute;
+        left: 20px;
+        top: 20px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .home-btn, .profile-btn {
+        background-color: #5e47a1;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .home-btn:hover, .profile-btn:hover {
+        background-color: #432c75;
+    }
+
+    .card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .form-label {
+        color: #2f1d4e;
+        font-weight: 500;
+    }
+    
+    .form-select, .form-control {
+        border-color: #e0e0e0;
+    }
+    
+    .form-select:focus, .form-control:focus {
+        border-color: #5e47a1;
+        box-shadow: 0 0 0 0.25rem rgba(94, 71, 161, 0.25);
+    }
+    
+    .btn-primary {
+        background-color: #5e47a1;
+        border-color: #5e47a1;
+        padding: 10px 30px;
+    }
+    
+    .btn-primary:hover {
+        background-color: #432c75;
+        border-color: #432c75;
+    }
+</style>
+{% endblock %}

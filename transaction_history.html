@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transaction History</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f5f5fa;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #3b1b59;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 20px;
+        }
+        .header a {
+            text-decoration: none;
+            background: #5e3d94;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+        .search-container {
+            margin: 20px auto;
+            width: 60%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .search-container input {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 24px 0 0 24px;
+            outline: none;
+        }
+        .search-container button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 0 24px 24px 0;
+            background-color: #d9c6f1;
+            cursor: pointer;
+        }
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: separate;
+            border-spacing: 0 12px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            background-color: #ffffff;
+            border-radius: 12px;
+        }
+        th {
+            background-color: #f3e8fd;
+            font-weight: bold;
+        }
+        td {
+            border: 1px solid #eee;
+        }
+        .review-btn {
+            padding: 6px 12px;
+            background-color: #6b46c1;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .download-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 30px auto;
+        }
+        .download-btn button {
+            padding: 10px 20px;
+            background-color: #5e3d94;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .footer-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #f8f4ff;
+            padding: 12px 0;
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid #ddd;
+        }
+        .footer-nav span {
+            color: #5e3d94;
+            font-weight: 500;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="/bookings">Bookings</a>
+        <a href="/">Transaction History</a>
+        <a href="/home">Home</a>
+    </div>
+
+    <div class="search-container">
+        <form method="GET" action="/search_transactions" style="display: flex; width: 100%;">
+            <input type="text" name="query" placeholder="Search Your Payment Details" />
+            <button type="submit">🔍</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Transaction ID</th>
+                <th>Hotel Name</th>
+                <th>Booking Date</th>
+                <th>Amount Paid</th>
+                <th>Payment Status</th>
+                <th>Package No.</th>
+                <th>Package Type</th>
+                <th>Review</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in transactions %}
+            <tr>
+                <td>{{ row.id }}</td>
+                <td>{{ row.hotel_name }}</td>
+                <td>{{ row.booking_date }}</td>
+                <td>${{ row.amount_paid }}</td>
+                <td>{{ row.payment_status }}</td>
+                <td>{{ row.package_number }}</td>
+                <td>{{ row.package_type }}</td>
+                <td><a href="/review/{{ row.id }}" class="review-btn">Review</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    <div class="footer-nav">
+        <span>Explore</span>
+        <span>Saved</span>
+        <span>Updates</span>
+        <span>Next →</span>
+    </div>
+
+</body>
+</html>

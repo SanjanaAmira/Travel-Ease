@@ -1,0 +1,64 @@
+<style>
+    .flash-messages {
+        position: fixed;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        color: white;
+        font-size: 16px;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.8);
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        animation: fadeOut 5s forwards;
+    }
+
+    @keyframes fadeOut {
+        0% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { opacity: 0; display: none; }
+    }
+
+    .flash-messages .alert {
+        margin: 5px 0;
+    }
+
+    .header-buttons {
+        position: absolute;
+        left: 20px;
+        top: 20px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .home-btn, .profile-btn {
+        background-color: #5e47a1;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .home-btn:hover, .profile-btn:hover {
+        background-color: #432c75;
+    }
+</style>
+
+<div class="header-buttons">
+    <a href="{{ url_for('index') }}" class="home-btn">Home</a>
+    <a href="{{ url_for('dashboard') }}" class="profile-btn">Profile</a>
+</div>
+
+<div class="flash-messages">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+</div>
